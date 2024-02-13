@@ -135,8 +135,8 @@ def PaseRange():
 def SelectTenants():
     i = 1
     print(color['white'] + "\nWhich tenants workspaces are you going to work on:" + color['off'])
-    print(color['darkblack'] + "[EX1] 1,2,3,4,5,...\n[EX2] 1-3,6-7,9,..." + color['off'])
-    print(color['darkblack'] + "[NOTE] You can update the tenants list by modifying the 'DataBase.json' file" + color['off'])
+    print(color['darkcyan'] + "[EX1] 1,2,3,4,5,...\n[EX2] 1-3,6-7,9,..." + color['off'])
+    print(color['darkcyan'] + "[NOTE] You can update the tenants list by modifying the 'DataBase.json' file" + color['off'])
     global subscription_ids, workspace_names, resource_group_names, clients,tenants_nums, credential, tenants, tenants_names
     with open('DataBase.json', 'r') as file:
         tenants = json.load(file)
@@ -296,7 +296,7 @@ def SelectRules():
             print(color['white'] + "\nThe matched rules" + color['off'])
             print("-"*100)
             for r in rules:
-                print(color['darkblack'] + r.display_name + color['off'])
+                print(color['darkcyan'] + r.display_name + color['off'])
             print("-"*100)
 
 def ListRules():
@@ -305,9 +305,9 @@ def ListRules():
     print("-"*100)
     for sr in selected_rules:
         if(len(sr['tenant']) > 9):
-            print(f"{sr['tenant']}\t{color['darkblack'] + sr['name'] + color['off']}\t{sr['display_name']}")
+            print(f"{sr['tenant']}\t{color['darkcyan'] + sr['name'] + color['off']}\t{sr['display_name']}")
         else:
-            print(f"{sr['tenant']}\t\t{color['darkblack'] + sr['name'] + color['off']}\t{sr['display_name']}")
+            print(f"{sr['tenant']}\t\t{color['darkcyan'] + sr['name'] + color['off']}\t{sr['display_name']}")
     print("-"*100)
 
 def CopyPaste():
