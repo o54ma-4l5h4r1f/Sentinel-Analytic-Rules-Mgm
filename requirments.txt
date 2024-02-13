@@ -1,5 +1,4 @@
 azure.mgmt.securityinsight
 azure.identity
-subprocess
-json
-warnings
+pandas
+openpyxl
