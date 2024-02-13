@@ -2,7 +2,7 @@
 Microsoft Sentinel Analytic Rules Management &amp; Assessment tool
 
 <!-- Getting Started -->
-## 	:toolbox: Getting Started
+## :computer: Getting Started
 
 Clone the project
 
