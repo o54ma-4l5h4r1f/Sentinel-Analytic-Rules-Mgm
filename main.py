@@ -5,9 +5,11 @@ from Colors import color
 import subprocess
 import json
 import warnings
+import uuid
 
 # Suppress all deprecation warnings
 warnings.simplefilter(action='ignore', category=DeprecationWarning)
+warnings.simplefilter(action='ignore', category=SyntaxWarning)
 
 def banner():
     print("""
@@ -46,6 +48,7 @@ resource_group_names = []
 rules = []
 selected_rules = []
 all_uniqe_rules = []
+rules_per_tenant = {}
 #================================================
 
 def AreYouSure():
@@ -128,6 +131,7 @@ def GrantAccess():
         print(color['darkyellow'] + "[+] Logging out from Azure." + color['off'])
         ps_command = 'azd auth logout'
         subprocess.run(["powershell", "-Command", ps_command], capture_output=True, text=True)
+        exit(0)
 
 def PaseRange():
     pass
@@ -186,8 +190,8 @@ def SelectTenants():
 
                 Inputs = ",".join(map(str,Inputs))
                 color['yellow'] + f"[+] The selected list of tenants : {Inputs}"  + color['off'] 
+                print(color['yellow'] + f"[+] The selected tenants : {Inputs}" + color['off'])
                 Inputs = tenants_nums = Inputs.split(",")
-                print(Inputs)
                 break
 
             except KeyboardInterrupt:
@@ -216,8 +220,8 @@ def ExportRules():
     if Input == "1":
         import pandas as pd
         import re
-        pattern_to_delete = r'((\s*)?(-)?(\s*)?\[((\s*)?wc(\s*)?|(\s*)?wb(\s*)?|(\s*)?dev(\s*)?)(\s*)?(-)?(\s*)?.*\](\s*)?)'
-        global workspace_names, resource_group_names, clients, tenants, selected_tenants_names, all_uniqe_rules
+        pattern_to_delete = r'((\s*)?(-)?(\s*)?\[((\s*)?wc(\s*)?|(\s*)?wb(\s*)?|(\s*)?dev(\s*)?)(\s*)?(-)?(\s*)?.*\](\s*)?)' # r'((\s+)?(-)?(\s+)?\[(wc)?(wb)?(dev)?(\s+)?(-)?(\s+)?.+\](\s+)?)'
+        global workspace_names, resource_group_names, clients, tenants, selected_tenants_names, all_uniqe_rules 
         
         rules_per_tenant = {}
         all_uniqe_rules = set()
@@ -246,7 +250,7 @@ def ExportRules():
         for rule in all_uniqe_rules:
             row_per_rule = []
             for name in selected_tenants_names:
-                if rule in rules_per_tenant[name]:
+                if rule in rules_per_tenant[name]: # it could be bettwe to use (in) instead of (==)
                     row_per_rule.append("✓")
                 else:
                     row_per_rule.append("✘")
@@ -261,28 +265,30 @@ def ExportRules():
 def SelectRules():
     print("""
 1) Select Rules By Name""")
-# 2) Select By kind         3) Select By Sevirity
-# 4) Select By Tag
+# 3) Select By kind         4) Select By Sevirity
+# 5) Select By Tag
     
     Input = GetInput(Range=1)
     if Input == "1":
         Filter = input(color['white'] + "Rule Name (or part of it) > "  + color['off']) # or multiple ones !
         # Case Sensitive !! 
-
-    global workspace_names, resource_group_names, clients, rules, tenants, selected_rules
+    global workspace_names, resource_group_names, clients, rules, tenants, selected_rules, rules_per_tenant
     selected_rules = []
     for i in range(len(clients)):
         rules = []
-        print(color['yellow'] + f"[+] looking into client #{tenants_nums[i]} ({tenants[str(tenants_nums[i])]['tenant_name']})"  + color['off'])
+        TenantName = tenants[str(tenants_nums[i])]['tenant_name']
+        print(color['yellow'] + f"[+] looking into client #{tenants_nums[i]} ({TenantName})"  + color['off'])
         tmp_rules = list(clients[i].alert_rules.list(resource_group_names[i], workspace_names[i]))
         print(color['darkyellow'] + f"[+] A total of {len(tmp_rules)} rules found" + color['off'])
         if Input == "1":
+            count = 0
+            rules_per_tenant[TenantName] = []
             for rule in tmp_rules:
                 if hasattr(rule, 'display_name') and Filter in rule.display_name:
                     rules.append(rule)
                     selected_rules.append(
                         {
-                            "tenant" : tenants[str(tenants_nums[i])]['tenant_name'],
+                            "tenant" : TenantName,
                             "name": rule.name,
                             "id": rule.id,
                             "display_name" : rule.display_name,
@@ -292,12 +298,14 @@ def SelectRules():
                             # "client" : clients[i]
                         }
                     )
+                    count += 1
+                    rules_per_tenant[TenantName].append(rule.display_name)
 
             print(color['white'] + "\nThe matched rules" + color['off'])
             print("-"*100)
             for r in rules:
                 print(color['darkcyan'] + r.display_name + color['off'])
-            print("-"*100)
+            print("-"*100)   
 
 def ListRules():
     global selected_rules
@@ -311,7 +319,7 @@ def ListRules():
     print("-"*100)
 
 def CopyPaste():
-    global workspace_names, resource_group_names, clients, rules, tenants, selected_rules
+    global workspace_names, resource_group_names, clients, rules, tenants, selected_rules, tenants_nums
     InputID = input(color['white'] + "rule ID >>> " + color['off'])
     print("Are you sure you want to update all the selected rules with this one [Y/n] ? ", end="")
     # updating !!!!
@@ -320,8 +328,8 @@ def CopyPaste():
         MasterRule = None
         flag = 0
 
-        if len(selected_rules) == 1:
-            print(color['yellow'] + f"There must be 2 or more selected rules for this option to work" + color['off'])
+        if len(tenants_nums) == 1: # or len(selected_rules) == 1:
+            print(color['yellow'] + f"There must be 2 or more selected tenants for this option to work" + color['off'])
         
         else:
             for sr in selected_rules:
@@ -371,17 +379,88 @@ What to update : """  + color['off'] + """
                 clients[sr["idx"]].alert_rules.create_or_update(resource_group_names[sr["idx"]], workspace_names[sr["idx"]], sr['name'], MasterRule)
 
     elif Input == "3":
-        NewName = input(color['white'] + "Write the new disblay name : " + color['off'])
-        print("Are you sure you want to change the display name for all the selected rules [Y/n] ? ", end="")
-        # updating !!!!
-        VerifyInput = GetInput(Range=0, YN=True).upper()
-        if VerifyInput == "Y" or VerifyInput == "YES":
-            for sr in selected_rules:
-                print(f"Updating the rule ({sr['name']})")
-                MasterRule = clients[sr["idx"]].alert_rules.get(resource_group_names[sr["idx"]], workspace_names[sr["idx"]], sr["name"])
-                MasterRule.display_name = NewName
-                clients[sr["idx"]].alert_rules.create_or_update(resource_group_names[sr["idx"]], workspace_names[sr["idx"]], sr['name'], MasterRule)
-    
+        print(color['white'] + """
+Choose an option : """  + color['off'] + """
+1) All Whole Name       2) Add Prefix           3) Add Suffix         
+4) Remove Prefix        5) Remove Suffix        """)
+        
+        Input = GetInput(Range=5)
+        
+        if Input == "1":
+            print(color['darkyellow'] + f"[+] NOTE : Write the name between double quotations \"...\"" + color['off'])
+            NewName = input(color['white'] + "Write the new disblay name : " + color['off']).strip()[1:-1]
+            print("Are you sure you want to change the display name for all the selected rules [Y/n] ? ", end="")
+            # updating !!!!
+            VerifyInput = GetInput(Range=0, YN=True).upper()
+            if VerifyInput == "Y" or VerifyInput == "YES":
+                for sr in selected_rules:
+                    print(f"Updating the rule ({sr['name']})")
+                    MasterRule = clients[sr["idx"]].alert_rules.get(resource_group_names[sr["idx"]], workspace_names[sr["idx"]], sr["name"])
+                    MasterRule.display_name = NewName
+                    clients[sr["idx"]].alert_rules.create_or_update(resource_group_names[sr["idx"]], workspace_names[sr["idx"]], sr['name'], MasterRule)
+        
+        elif Input == "2":
+            print(color['darkyellow'] + f"[+] NOTE : Write the prefix between double quotations \"...\"" + color['off'])
+            print(color['darkyellow'] + f"[+] NOTE : you may need to add a space after the prefix" + color['off'])
+            NewPrefix = input(color['white'] + "Write the prefix : " + color['off']).strip()[1:-1]
+            print("Are you sure you want to change the display name for all the selected rules [Y/n] ? ", end="")
+            # updating !!!!
+            VerifyInput = GetInput(Range=0, YN=True).upper()
+            if VerifyInput == "Y" or VerifyInput == "YES":
+                for sr in selected_rules:
+                    print(f"Updating the rule ({sr['name']})")
+                    MasterRule = clients[sr["idx"]].alert_rules.get(resource_group_names[sr["idx"]], workspace_names[sr["idx"]], sr["name"])
+                    MasterRule.display_name = NewPrefix + MasterRule.display_name
+                    clients[sr["idx"]].alert_rules.create_or_update(resource_group_names[sr["idx"]], workspace_names[sr["idx"]], sr['name'], MasterRule)
+
+        elif Input == "3":
+            print(color['darkyellow'] + f"[+] NOTE : Write the suffix between double quotations \"...\"" + color['off'])
+            print(color['darkyellow'] + f"[+] NOTE : you may need to add a space before the suffix" + color['off'])
+            NewSuffix = input(color['white'] + "Write the suffix : " + color['off']).strip()[1:-1]
+            print("Are you sure you want to change the display name for all the selected rules [Y/n] ? ", end="")
+            # updating !!!!
+            VerifyInput = GetInput(Range=0, YN=True).upper()
+            if VerifyInput == "Y" or VerifyInput == "YES":
+                for sr in selected_rules:
+                    print(f"Updating the rule ({sr['name']})")
+                    MasterRule = clients[sr["idx"]].alert_rules.get(resource_group_names[sr["idx"]], workspace_names[sr["idx"]], sr["name"])
+                    MasterRule.display_name = MasterRule.display_name + NewSuffix
+                    clients[sr["idx"]].alert_rules.create_or_update(resource_group_names[sr["idx"]], workspace_names[sr["idx"]], sr['name'], MasterRule)
+
+        elif Input == "4":
+            print(color['darkyellow'] + f"[+] NOTE : Write the prefix between double quotations \"...\"" + color['off'])
+            print(color['darkyellow'] + f"[+] NOTE : you may need to include the spaces around the prefix" + color['off'])
+            Prefix = input(color['white'] + "Write the prefix : " + color['off']).strip()[1:-1]
+            print("Are you sure you want to change the display name for all the selected rules [Y/n] ? ", end="")
+            # updating !!!!
+            VerifyInput = GetInput(Range=0, YN=True).upper()
+            if VerifyInput == "Y" or VerifyInput == "YES":
+                for sr in selected_rules:
+                    print(f"Updating the rule ({sr['name']})")
+                    MasterRule = clients[sr["idx"]].alert_rules.get(resource_group_names[sr["idx"]], workspace_names[sr["idx"]], sr["name"])
+                    if MasterRule.display_name.startswith(Prefix):
+                        MasterRule.display_name = MasterRule.display_name[len(Prefix):]
+                        clients[sr["idx"]].alert_rules.create_or_update(resource_group_names[sr["idx"]], workspace_names[sr["idx"]], sr['name'], MasterRule)
+                    else:
+                        print(color['red'] + "[!] Prefix not found" + color['off'])
+                    
+        elif Input == "5":
+            print(color['darkyellow'] + f"[+] NOTE : Write the suffix between double quotations \"...\"" + color['off'])
+            print(color['darkyellow'] + f"[+] NOTE : you may need to include the spaces around the suffix" + color['off'])
+            Suffix = input(color['white'] + "Write the suffix : " + color['off']).strip()[1:-1]
+            print("Are you sure you want to change the display name for all the selected rules [Y/n] ? ", end="")
+            # updating !!!!
+            VerifyInput = GetInput(Range=0, YN=True).upper()
+            if VerifyInput == "Y" or VerifyInput == "YES":
+                for sr in selected_rules:
+                    print(f"Updating the rule ({sr['name']})")
+                    MasterRule = clients[sr["idx"]].alert_rules.get(resource_group_names[sr["idx"]], workspace_names[sr["idx"]], sr["name"])
+                    if MasterRule.display_name.endswith(Suffix):
+                        MasterRule.display_name = MasterRule.display_name[:-len(Suffix)]
+                        clients[sr["idx"]].alert_rules.create_or_update(resource_group_names[sr["idx"]], workspace_names[sr["idx"]], sr['name'], MasterRule)
+                    else:
+                        print(color['red'] + "[!] Suffix not found" + color['off'])
+        
     elif Input == "4":
         NewName = input(color['white'] + "Write the new description : " + color['off'])
         print("Are you sure you want to change the description for all the selected rules [Y/n] ? ", end="")
@@ -426,6 +505,45 @@ Choose the severity: """  + color['off'] + """
 def JsonUpdate():
     print(color['red'] + "[!] This feature not enable yet" + color['off'])
 
+def CopyPaste2():
+    global workspace_names, resource_group_names, clients, rules, tenants, selected_rules, tenants_nums, rules_per_tenant
+    InputID = input(color['white'] + "rule ID >>> " + color['off'])
+    print("Are you sure you want to create the missing rules on other tenants from the selected one [Y/n] ? ", end="")
+    # updating !!!!
+    VerifyInput = GetInput(Range=0, YN=True).upper()
+    if VerifyInput == "Y" or VerifyInput == "YES":
+        MasterRule = None
+        flag = 0
+
+        if len(tenants_nums) == 1: # or len(selected_rules) == 1:
+            print(color['yellow'] + f"There must be 2 or more selected tenants for this option to work" + color['off'])
+        
+        else:
+            for sr in selected_rules:
+                if sr["name"] == InputID:
+                    print(color['yellow'] + f"Copying The rule from {sr['tenant']}" + color['off'])
+                    MasterRule = clients[sr["idx"]].alert_rules.get(resource_group_names[sr["idx"]], workspace_names[sr["idx"]], InputID)
+                    flag = 1
+                    selected_rule_display_name = MasterRule.display_name
+                    selected_rule_tenant = sr["tenant"]
+                    SSMasterRule = MasterRule.serialize()
+                    SSMasterRule.pop('etag') # important !! 
+                    break
+
+            if flag:
+                for i in range(len(clients)):
+                    TenantName = tenants[str(tenants_nums[i])]['tenant_name']
+                    if selected_rule_tenant != TenantName:
+                        if selected_rule_display_name in rules_per_tenant[TenantName]:
+                            print(color['red'] + f"[!] The analytic rule already exist in the tenant #{tenants_nums[i]} ({TenantName})" + color['off'])
+                        else:
+                            print(color['darkyellow'] + f"[+] Creating a new rule into the tenant #{tenants_nums[i]} ({TenantName})"  + color['off'])
+                            new_id =  str(uuid.uuid4())
+                            print(color['darkyellow'] + f"[+] The new rule ID = {new_id}"  + color['off'])
+                            clients[i].alert_rules.create_or_update(resource_group_names[i], workspace_names[i], new_id, SSMasterRule)
+            else:
+                print(color['red'] + "[!] The analytic rule not found" + color['off'])
+
 def UpdateRules():
     global workspace_names, resource_group_names, clients, rules, tenants
     print(color['white'] + '''
@@ -441,12 +559,22 @@ Choose the update method : ''' + color['off'] + '''
     elif Input == "3":
         ManualUpdate()
 
+def CreateRules():
+    global workspace_names, resource_group_names, clients, rules, tenants
+    print(color['white'] + '''
+Choose the creation method : ''' + color['off'] + '''
+1) Create from an Existing Rule''')
+    
+    Input = GetInput(Range=1)
+    if Input == "1":
+        CopyPaste2()
+
 def Actions():
     print(color['darkcyan'] + '''
 Choose the action: ''' + color['off'] + '''    
 1) Select Rules         2) List Selected Rules
-3) Update Rules         4) Export Rules''')
-# 5) Delete Rules         6) help
+3) Update Rules         4) Rules Comparison/Assessment    
+5) Create Rules         6) help''')
     
     Inputs = GetInput(Range=6)
     match Inputs:
@@ -458,6 +586,8 @@ Choose the action: ''' + color['off'] + '''
             UpdateRules()
         case '4':
             ExportRules()
+        case '5':
+            CreateRules()
         case _:
             Help()
 
