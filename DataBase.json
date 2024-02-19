@@ -3,12 +3,12 @@
         "tenant_name" : "Display Name",
         "subscription_id" : "5cfeafdb-fc6b-xxxx-xxxx-xxxxxxxxxxxx",
         "resource_group_name" : "Resourse Group",
-        "workspace_name" : "WorkSpace Name "
+        "workspace_name" : "WorkSpace Name"
     },
     "2" : {
-        "tenant_name" : "Display Name",
-        "subscription_id" : "5cfeafdb-fc6b-xxxx-xxxx-xxxxxxxxxxxx",
-        "resource_group_name" : "Resourse Group",
-        "workspace_name" : "WorkSpace Name "
+        "tenant_name" : "Display Name 2",
+        "subscription_id" : "7a3cafdb-fc6b-xxxx-xxxx-xxxxxxxxxxxx",
+        "resource_group_name" : "Resourse Group 2",
+        "workspace_name" : "WorkSpace Name 2"
     }
 }
