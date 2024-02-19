@@ -1,0 +1,33 @@
+{
+  "etag": "\"3300d779-0000-1100-0000-xxxxxxxxxxxx\"",
+  "kind": "Scheduled",
+  "properties": {
+    "query": "print('Temporary Rule Template')",
+    "queryFrequency": "P5D",
+    "queryPeriod": "P5D",
+    "severity": "Medium",
+    "triggerOperator": "GreaterThan",
+    "triggerThreshold": 9999,
+    "eventGroupingSettings": {
+      "aggregationKind": "SingleAlert"
+    },
+    "description": "Temporary Rule Template",
+    "displayName": "Temporary Rule Template",
+    "enabled": true,
+    "suppressionDuration": "PT5H",
+    "suppressionEnabled": false,
+    "tactics": [],
+    "incidentConfiguration": {
+      "createIncident": true,
+      "groupingConfiguration": {
+        "enabled": false,
+        "reopenClosedIncident": false,
+        "lookbackDuration": "PT5H",
+        "matchingMethod": "AllEntities",
+        "groupByEntities": [],
+        "groupByAlertDetails": [],
+        "groupByCustomDetails": []
+      }
+    }
+  }
+}
