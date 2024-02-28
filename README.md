@@ -2,15 +2,18 @@
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
 <div align="center">
+<img alt="..." src="https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white">
 <img alt="..." src="https://img.shields.io/badge/python-3.11-blue?style=for-the-badge">
-  
+
 <a href="https://github.com/o54ma-4l5h4r1f/Sentinel-Analytic-Rules-Mgm/issues">
   <img alt="..." src="https://img.shields.io/github/issues/o54ma-4l5h4r1f/Sentinel-Analytic-Rules-Mgm.svg?style=for-the-badge">
 </a>
 
+<!--
 <a href="https://github.com/o54ma-4l5h4r1f/Sentinel-Analytic-Rules-Mgm/graphs/contributors">
   <img alt="GitHub forks" src="https://img.shields.io/github/contributors/o54ma-4l5h4r1f/Sentinel-Analytic-Rules-Mgm.svg?style=for-the-badge">
 </a>
+-->
 
 <a href="https://github.com/o54ma-4l5h4r1f/Sentinel-Analytic-Rules-Mgm/network/members">
   <img alt="GitHub forks" src="https://img.shields.io/github/forks/o54ma-4l5h4r1f/Sentinel-Analytic-Rules-Mgm?style=for-the-badge">
