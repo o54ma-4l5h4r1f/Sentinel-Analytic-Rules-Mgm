@@ -1,11 +1,55 @@
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[![Python-shield][Python-shield]][Python-shield]
-[![Forks][forks-shield]][forks-url]
-[![Issues][issues-shield]][issues-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Followers][Followers-shield]][Followers-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+
+<div align="center">
+<img alt="..." src="https://img.shields.io/pypi/pyversions/strings?style=for-the-badge" 
+<a href="https://github.com/o54ma-4l5h4r1f/Sentinel-Analytic-Rules-Mgm/issues">
+  <img alt="..." src="https://img.shields.io/github/issues/o54ma-4l5h4r1f/Sentinel-Analytic-Rules-Mgm.svg?style=for-the-badge">
+</a>
+<img alt="GitHub forks" src="https://img.shields.io/github/forks/o54ma-4l5h4r1f/Sentinel-Analytic-Rules-Mgm?style=for-the-badge">
+<a href=https://github.com/o54ma-4l5h4r1f/Sentinel-Analytic-Rules-Mgm/stargazersa">
+  <img alt="..." src="https://img.shields.io/github/stars/o54ma-4l5h4r1f/Sentinel-Analytic-Rules-Mgm.svg?style=for-the-badge">
+</a>
+<a href="https://github.com/o54ma-4l5h4r1f?tab=followers">
+  <img alt="..." src="https://img.shields.io/github/followers/o54ma-4l5h4r1f?style=for-the-badge">
+</a>
+<a href="https://www.linkedin.com/in/osama-alsharif-21153716a">
+  <img alt="..." src="https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555">
+</a>
+</div>
+
+
+<!-- PROJECT LOGO -->
+<br />
+<p align="center">
+  <a href="#"><pre align="center">
+      ___           ___           ___       ___           ___     
+     /\  \         /\__\         /\__\     /\  \         /\  \    
+    /::\  \       /:/  /        /:/  /    /::\  \       /::\  \   
+   /:/\:\  \     /:/  /        /:/  /    /:/\:\  \     /:/\ \  \  
+  /::\~\:\  \   /:/  /  ___   /:/  /    /::\~\:\  \   _\:\~\ \  \ 
+ /:/\:\ \:\__\ /:/__/  /\__\ /:/__/    /:/\:\ \:\__\ /\ \:\ \ \__\
+ \/_|::\/:/  / \:\  \ /:/  / \:\  \    \:\~\:\ \/__/ \:\ \:\ \/__/
+    |:|::/  /   \:\  /:/  /   \:\  \    \:\ \:\__\    \:\ \:\__\  
+    |:|\/__/     \:\/:/  /     \:\  \    \:\ \/__/     \:\/:/  /  
+    |:|  |        \::/  /       \:\__\    \:\__\        \::/  /   
+     \|__|         \/__/         \/__/     \/__/         \/__/    
+  </pre></a>
+
+  <h3 align="center">From SQL injection to Shell II</h3>
+
+  <p align="center">
+    Blind SQL Injection <br />
+    Difficulty Intermediate
+    <br />
+    <a href="https://www.vulnhub.com/entry/pentester-lab-from-sql-injection-to-shell-ii,69/"><strong>Explor Vulnhub »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/o54ma-4l5h4r1f/From-SQL-injection-to-Shell-II/blob/master/BlindSQLI.py">View Code</a>
+    ·
+    <a href="https://github.com/o54ma-4l5h4r1f/From-SQL-injection-to-Shell-II/issues">Report Bug</a>
+  </p>
+</p>
 
 
 # Sentinel-Analytic-Rules-Mgm
@@ -40,17 +84,3 @@ PS> winget install microsoft.azd
 
 And make sure to restart the terminal after the installation ends
 
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[Python-shield]: https://img.shields.io/pypi/pyversions/strings?style=for-the-badge
-[forks-shield]: https://img.shields.io/github/forks/o54ma-4l5h4r1f/Sentinel-Analytic-Rules-Mgm.svg?style=for-the-badge
-[forks-url]: https://github.com/o54ma-4l5h4r1f/Sentinel-Analytic-Rules-Mgm/network/members
-[stars-shield]: https://img.shields.io/github/stars/o54ma-4l5h4r1f/Sentinel-Analytic-Rules-Mgm.svg?style=for-the-badge
-[stars-url]: https://github.com/o54ma-4l5h4r1f/Sentinel-Analytic-Rules-Mgm/stargazers
-[issues-shield]: https://img.shields.io/github/issues/o54ma-4l5h4r1f/Sentinel-Analytic-Rules-Mgm.svg?style=for-the-badge
-[issues-url]: https://github.com/o54ma-4l5h4r1f/Sentinel-Analytic-Rules-Mgm/issues
-[Followers-shield]: https://img.shields.io/github/followers/o54ma-4l5h4r1f?style=for-the-badge
-[Followers-url]:https://github.com/o54ma-4l5h4r1f?tab=followers
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://www.linkedin.com/in/osama-alsharif-21153716a
-[product-screenshot]: images/screenshot.png
