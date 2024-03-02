@@ -369,7 +369,7 @@ Choose the action:
 3) Update Rules         4) Rules Comparison/Assessment
 5) Create Rules         6) help
 ```
-If you tried to select the rules again you will notice they now have the same display name
+If you tried to select the rules again you will notice they now have the same display name, and the same properties.
 ```
 >>> 1
 
