@@ -369,6 +369,41 @@ Choose the action:
 3) Update Rules         4) Rules Comparison/Assessment
 5) Create Rules         6) help
 ```
+If you tried to select the rules again you will notice they now have the same display name
+```
+>>> 1
+
+1) Select Rules By Name
+
+>>> 1
+Rule Name (or part of it) > User Login from Different Countries Within 3 Hours
+[+] looking into client #1 (Company-1)
+[+] A total of 1 rules found
+
+The matched rules
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+[+] looking into client #2 (Company-2)
+[+] A total of 302 rules found
+
+The matched rules
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+[+] looking into client #3 (Company-3)
+[+] A total of 260 rules found
+
+The matched rules
+----------------------------------------------------------------------------------------------------
+User Login from Different Countries Within 3 Hours [DEV]
+----------------------------------------------------------------------------------------------------
+[+] looking into client #4 (Company-4)
+[+] A total of 335 rules found
+
+The matched rules
+----------------------------------------------------------------------------------------------------
+User Login from Different Countries Within 3 Hours [DEV]
+----------------------------------------------------------------------------------------------------
+```
 In the same way, you can create the rules if they are missing in the other tenants using the 5th option. 
 
 And finally if you wanted to compare the existence of analytic rules across different selected tenants
