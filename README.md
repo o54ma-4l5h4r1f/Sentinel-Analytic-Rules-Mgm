@@ -1,5 +1,4 @@
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+<img width="858" alt="image" src="https://github.com/o54ma-4l5h4r1f/Sentinel-Analytic-Rules-Mgm/assets/90612145/7692d68e-7a56-4a9e-998c-9c234d38a263"><!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
 <div align="center">
 <img alt="..." src="https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white">
@@ -112,4 +111,228 @@ PS> pip install -r requirments.txt
 ```
 And make sure to restart the powershell terminal after the installation ends
 
+## 🩹 Update DataBase.json file
+To access related resources, you'll need to update the `DataBase.json` file with your specific information. Follow these steps:
+
+1. Open the `DataBase.json` file located in the root directory of this repository.
+
+2. Add a new entry or update an existing one following the JSON template below:
+
+```json
+{
+    "1" : {
+        "tenant_name" : "Display Name",
+        "subscription_id" : "5cfeafdb-fc6b-xxxx-xxxx-xxxxxxxxxxxx",
+        "resource_group_name" : "Resourse Group",
+        "workspace_name" : "WorkSpace Name"
+    },
+    "2" : {
+        "tenant_name" : "Display Name 2",
+        "subscription_id" : "7a3cafdb-fc6b-xxxx-xxxx-xxxxxxxxxxxx",
+        "resource_group_name" : "Resourse Group 2",
+        "workspace_name" : "WorkSpace Name 2"
+    }
+}
+```
+3. Save the changes to the file.
+   
 ## :jack_o_lantern: Lets Run It
+```powershell
+> python3 .\main.py
+```
+```        
+
+      ___           ___           ___       ___           ___     
+     /\  \         /\__\         /\__\     /\  \         /\  \    
+    /::\  \       /:/  /        /:/  /    /::\  \       /::\  \   
+   /:/\:\  \     /:/  /        /:/  /    /:/\:\  \     /:/\ \  \  
+  /::\~\:\  \   /:/  /  ___   /:/  /    /::\~\:\  \   _\:\~\ \  \ 
+ /:/\:\ \:\__\ /:/__/  /\__\ /:/__/    /:/\:\ \:\__\ /\ \:\ \ \__\
+ \/_|::\/:/  / \:\  \ /:/  / \:\  \    \:\~\:\ \/__/ \:\ \:\ \/__/
+    |:|::/  /   \:\  /:/  /   \:\  \    \:\ \:\__\    \:\ \:\__\  
+    |:|\/__/     \:\/:/  /     \:\  \    \:\ \/__/     \:\/:/  /  
+    |:|  |        \::/  /       \:\__\    \:\__\        \::/  /   
+     \|__|         \/__/         \/__/     \/__/         \/__/     
+
+
+
+    Welcome to the Analytic Rules Management & Assessment tool
+
+
+Authenticatiion setup:
+
+1) Login to Azure
+2) Relogin to Azure
+3) Logout from Azure
+
+```
+A browser tab will open, allowing you to log in with the appropriate account. If you're already logged in, this step will be skipped.
+```
+>>> 1
+[+] Already Logged into Azure.
+
+Which tenants workspaces are you going to work on:
+[EX1] 1,2,3,4,5,...
+[EX2] 1-3,6-7,9,...
+[NOTE] You can update the tenants list by modifying the 'DataBase.json' file
+1 ) Company-1           2 ) Company-2           3 ) Company-3
+4 ) Company-4           5 ) Company-5           6 ) Company-6
+7 ) Company-7           8 ) Company-8           9 ) ...
+>>>
+```
+The list of tenants displayed will be determined by the information you've provided in the DataBase.json file.
+```
+>>> 1-4
+[+] The selected tenants : 1,2,3,4
+
+Choose the action:
+1) Select Rules         2) List Selected Rules
+3) Update Rules         4) Rules Comparison/Assessment
+5) Create Rules         6) help
+```
+
+
+Selecting analytic rules that containes `DEV` in their names
+
+> [!NOTE]  
+> The script does not currently support NRT anallytic rules.
+
+```
+>>> 1
+
+1) Select Rules By Name
+
+>>> 1
+Rule Name (or part of it) > DEV
+[+] looking into client #1 (Company-1)
+[+] A total of 1 rules found
+
+The matched rules
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+[+] looking into client #2 (Company-2)
+[+] A total of 302 rules found
+
+The matched rules
+----------------------------------------------------------------------------------------------------
+[DEV] | Pulse Connect Secure VPN-CVE_2021_22893_Exploit
+[DEV] | Known Malware Detected
+[DEV] | Shadow Copy Deletion
+----------------------------------------------------------------------------------------------------
+[+] looking into client #3 (Company-3)
+[+] A total of 260 rules found
+
+The matched rules
+----------------------------------------------------------------------------------------------------
+User Login from Different Countries Within 3 Hours [DEV]
+Suspicious Url Clicked [DEV]
+----------------------------------------------------------------------------------------------------
+[+] looking into client #4 (Company-4)
+[+] A total of 335 rules found
+
+The matched rules
+----------------------------------------------------------------------------------------------------
+[DEV] Anomalous Sign-in Detected by a User
+[DEV] User Login from Different Countries Within 3 Hours
+[DEV] Suspicious Url Clicked
+----------------------------------------------------------------------------------------------------
+
+Choose the action:
+1) Select Rules         2) List Selected Rules
+3) Update Rules         4) Rules Comparison/Assessment
+5) Create Rules         6) help
+```
+List the selected rules 
+```
+>>> 2
+
+The selected rules
+----------------------------------------------------------------------------------------------------
+Company-2               d8dcfbbb-e914-4622-a96e-68907d61c9f9    [DEV] | Pulse Connect Secure VPN-CVE_2021_22893_Exploit
+Company-2               9d15b6b7-3289-48a0-b7d2-f72266277ddd    [DEV] | Known Malware Detected
+Company-2               5759e9ec-df80-4cd2-82bd-083d796bbd30    [DEV] | Shadow Copy Deletion
+Company-3               ced4bd68-51dd-4a23-b242-f8364c47634b    User Login from Different Countries Within 3 Hours [DEV]
+Company-3               28810579-a6d6-4e13-aecb-396941cfa5dd    Suspicious Url Clicked [DEV]
+Company-4               224b8b16-0de2-4bd7-8da1-4b7d578de58b    [DEV] Anomalous Sign-in Detected by a User
+Company-4               ced4bd68-51dd-4a23-b242-f8364c47634b    [DEV] User Login from Different Countries Within 3 Hours      
+Company-4               28910579-a6d6-4e13-aecb-396941cfa5dd    [DEV] Suspicious Url Clicked
+----------------------------------------------------------------------------------------------------
+
+Choose the action:
+1) Select Rules         2) List Selected Rules
+3) Update Rules         4) Rules Comparison/Assessment
+5) Create Rules         6) help
+```
+Update the selected rules manually
+```
+>>> 3
+
+Choose the update method : 
+1) Update from an Existing Rule                 2) from a JSON file
+3) Manually
+
+>>> 3
+
+What to update : 
+1) Enable               2) Disable              3) Display Name
+4) Description          5) Severity             6) KQL Query
+
+>>> 1
+Are you sure you want to enable all the selected rules [Y/n] ? Y
+Enabling the rule (d8dcfbbb-e914-4622-a96e-68907d61c9f9)
+Enabling the rule (9d15b6b7-3289-48a0-b7d2-f72266277ddd)
+Enabling the rule (5759e9ec-df80-4cd2-82bd-083d796bbd30)
+Enabling the rule (ced4bd68-51dd-4a23-b242-f8364c47634b)
+Enabling the rule (28810579-a6d6-4e13-aecb-396941cfa5dd)
+Enabling the rule (224b8b16-0de2-4bd7-8da1-4b7d578de58b)
+Enabling the rule (ced4bd68-51dd-4a23-b242-f8364c47634b)
+Enabling the rule (28910579-a6d6-4e13-aecb-396941cfa5dd)
+
+Choose the action:
+1) Select Rules         2) List Selected Rules
+3) Update Rules         4) Rules Comparison/Assessment
+5) Create Rules         6) help
+```
+
+Updating the selected rules using one of them after choosing a rule and edit it using sentinel.  
+
+<img width="100%" alt="image" src="https://github.com/o54ma-4l5h4r1f/Sentinel-Analytic-Rules-Mgm/assets/90612145/524ec759-2a11-44fb-9070-cc8736e9b5b9">
+
+```
+
+```
+
+
+
+
+
+if you eanted to compare the existence of analytic rules across different selected tenants
+```
+>>> 4   
+
+1) Exporting into an excel sheet
+
+>>> 1
+[+] dumping the client #1 (Company-1) rules
+[+] A total of 1 rules found
+[+] dumping the client #2 (Company-2) rules
+[+] A total of 302 rules found
+[+] dumping the client #3 (Company-3) rules
+[+] A total of 260 rules found
+[+] dumping the client #4 (Company-4) rules
+[+] A total of 335 rules found
+[+] Excel file created successfully.
+
+Choose the action:
+1) Select Rules         2) List Selected Rules
+3) Update Rules         4) Rules Comparison/Assessment
+5) Create Rules         6) help
+```
+this will generate an excel sheet named comparison.xlsx as shown below
+
+<img width="70%" alt="image" src="https://github.com/o54ma-4l5h4r1f/Sentinel-Analytic-Rules-Mgm/assets/90612145/1e5b8b39-e579-4d70-a14e-eaf759c6ca39">
+
+you can find these rules on this repo (https://github.com/Azure/Azure-Sentinel/tree/master/Detections/) 
+
+You can keep going and discovere new featues from here.
+Good luck ^^ 
