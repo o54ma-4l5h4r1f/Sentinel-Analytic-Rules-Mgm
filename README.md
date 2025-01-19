@@ -106,6 +106,8 @@ On powershell
 
 # Install the requirements
 > pip install -r requirments.txt
+# OR
+> python3.10 -m pip install -r .\requirments.txt
 ```
 And make sure to restart the powershell terminal after the installation ends
 
